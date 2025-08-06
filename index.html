@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="uz" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>P2P Tizimi</title>
+    <script>
+      // Til tanlash logikasi
+      let lang = "uz";
+      function setLang(l) {
+        lang = l;
+        document.querySelectorAll("[data-lang]").forEach((el) => {
+          el.innerText = translations[lang][el.dataset.lang];
+        });
+      }
+
+      const translations = {
+        uz: {
+          title: "P2P Pul O‘tkazma",
+          send: "Yuborish",
+          check: "Checkni ko‘rsatish",
+          hideCheck: "Checkni yashirish",
+          fromCard: "Jo‘natuvchi karta",
+          toCard: "Qabul qiluvchi karta",
+          amount: "Miqdor",
+          footer: "Barcha huquqlar himoyalangan",
+        },
+        en: {
+          title: "P2P Money Transfer",
+          send: "Send",
+          check: "Show Receipt",
+          hideCheck: "Hide Receipt",
+          fromCard: "Sender Card",
+          toCard: "Receiver Card",
+          amount: "Amount",
+          footer: "All rights reserved",
+        },
+      };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen"
+  >
+    <!-- Navbar -->
+    <nav
+      class="flex items-center justify-between p-4 bg-green-600 dark:bg-green-800"
+    >
+      <h1 class="text-2xl font-bold" data-lang="title">P2P Pul O‘tkazma</h1>
+      <div>
+        <button
+          onclick="setLang('uz')"
+          class="mx-1 px-3 py-1 bg-white dark:bg-gray-700 rounded"
+        >
+          UZ
+        </button>
+        <button
+          onclick="setLang('en')"
+          class="mx-1 px-3 py-1 bg-white dark:bg-gray-700 rounded"
+        >
+          EN
+        </button>
+        <button
+          onclick="toggleDarkMode()"
+          class="ml-2 px-3 py-1 bg-white dark:bg-gray-700 rounded"
+          id="darkModeBtn"
+        >
+          🌙
+        </button>
+      </div>
+    </nav>
+
+    <!-- Transfer Form -->
+    <div
+      class="max-w-xl mx-auto mt-10 p-6 bg-gray-900 dark:bg-gray-800 rounded shadow"
+    >
+      <label class="block mb-2" data-lang="fromCard">Jo‘natuvchi karta</label>
+      <input
+        type="text"
+        placeholder="1234 5678 9012 3456"
+        class="w-full p-2 mb-4 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-300 dark:placeholder-gray-300"
+      />
+
+      <label class="block mb-2" data-lang="toCard">Qabul qiluvchi karta</label>
+      <input
+        type="text"
+        placeholder="9876 5432 1098 7654"
+        class="w-full p-2 mb-4 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-300 dark:placeholder-gray-300"
+      />
+
+      <label class="block mb-2" data-lang="amount">Miqdor</label>
+      <input
+        type="number"
+        placeholder="100000"
+        class="w-full p-2 mb-4 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-300 dark:placeholder-gray-300"
+      />
+
+      <button
+        class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded"
+        data-lang="send"
+      >
+        Yuborish
+      </button>
+
+      <div class="mt-4 text-right">
+        <button
+          onclick="toggleCheck()"
+          id="toggleCheckBtn"
+          class="text-green-700 underline"
+          data-lang="check"
+        >
+          Checkni ko‘rsatish
+        </button>
+      </div>
+    </div>
+
+    <!-- Check Modal -->
+    <div
+      id="checkModal"
+      class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+    >
+      <div class="bg-white dark:bg-gray-900 p-6 rounded shadow max-w-sm w-full">
+        <h2 class="text-xl font-bold mb-4">Check</h2>
+        <p>Jo‘natuvchi: **** **** **** 3456</p>
+        <p>Qabul qiluvchi: **** **** **** 7654</p>
+        <p>Miqdor: 100000 so‘m</p>
+        <button
+          onclick="toggleCheck()"
+          class="mt-4 w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded"
+          data-lang="hideCheck"
+        >
+          Checkni yashirish
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-20 p-4 bg-green-600 dark:bg-green-800 text-center">
+      <p data-lang="footer">Barcha huquqlar himoyalangan</p>
+    </footer>
+    <script>
+      // Dark mode toggle
+      function toggleDarkMode() {
+        const html = document.documentElement;
+        html.classList.toggle("dark");
+
+        // Tugma belgisi o‘zgarishi (quyosh/oy)
+        const btn = document.getElementById("darkModeBtn");
+        btn.innerText = html.classList.contains("dark") ? "☀️" : "🌙";
+      }
+
+      // Sahifa yuklanganda tugma to‘g‘ri holatda bo‘lishi uchun:
+      window.addEventListener("DOMContentLoaded", () => {
+        const btn = document.getElementById("darkModeBtn");
+        btn.innerText = document.documentElement.classList.contains("dark")
+          ? "☀️"
+          : "🌙";
+      });
+    </script>
+
+    <script>
+      function toggleCheck() {
+        const modal = document.getElementById("checkModal");
+        const isVisible = !modal.classList.contains("hidden");
+        modal.classList.toggle("hidden", isVisible);
+        document.getElementById("toggleCheckBtn").innerText = isVisible
+          ? translations[lang]["check"]
+          : translations[lang]["hideCheck"];
+    </script>
+    <script src="./dist/main.js"></script>
+  </body>
+</html>
